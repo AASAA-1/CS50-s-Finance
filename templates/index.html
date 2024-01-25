@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock %}
+
+
+{% block main %}
+<div class="alert alert-primary panel-alert" role="alert">{{alert}}</div>
+<p style="display: none">
+    {% set cashtotal = [user_cash] %}
+    {% for row in portfolio %}
+    {{ cashtotal.append("$%.2f"| format(row["quote_amount"] * row["price"]) | replace("$","") | int )  }}
+    {% endfor %}
+    <!-- The above makes a list called "Cashtotal" ,puts the user's cash amount in it ,calculates the total amount of a stock's price
+    per row with 2 decimal places (as a string value because it has a $ in it) ,removes the $ ,turns the value to int ,adds it to the list.
+    then below it sums everything up in the list and displays it.  -->
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="text-start">Symbol</th>
+            <th class="text-start">Name</th>
+            <th class="text-end">Shares</th>
+            <th class="text-end">Price</th>
+            <th class="text-end">TOTAL</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for row in portfolio %}
+     
+            <tr>
+                <td class="text-start"> {{  row["symbol"]  }} </td>
+                <td class="text-start"> {{  row["quote_name"]  }} </td>
+                <td class="text-end"> {{  row["quote_amount"]  }} </td>
+                <td class="text-end"> {{  row["price"] | usd   }}  </td>
+                <td class="text-end"> {{  (row["quote_amount"] * row["price"]) | usd }} </td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td class="border-0 fw-bold text-end" colspan="4"> Cash : </td>
+                <td class="border-0 text-end"> {{"$%.2f"|format(user_cash)}}</td>
+            </tr>
+
+            <tr>
+                <td class="border-0 fw-bold text-end" colspan="4" > TOTAL : </td>
+                <td class="border-0 w-bold text-end">
+                    {{cashtotal | sum | usd}}
+                </td >
+            </tr>
+    </tbody>
+{% endblock %}

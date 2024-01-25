@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="text-start">Symbol</th>
+            <th class="text-end">Shares</th>
+            <th class="text-end">Price</th>
+            <th class="text-end">Date</th>
+        </tr>
+    </thead>
+
+ {% for row in history %}
+
+    <tr>
+        <td> {{  row["symbol"]  }} </td>
+        <td> {{  row["quote_amount"]  }} </td>
+        <td> {{  row["price"] }} </td>
+        <td> {{  row["timestamp"] }}   </td>
+    </tr>
+ {% endfor %}
+
+{% endblock %}
